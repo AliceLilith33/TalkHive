@@ -18,6 +18,14 @@ export default createStore({
       fontSize: '', // 字体大小
     },
     socket: null,
+    // 要编辑的笔记
+    currentNote: {
+      note_id: null,
+      filename: '',
+      category: ''
+    },
+    // 笔记的标签
+    notesCategories: [],
   },
   
   // 同步修改状态的方法
@@ -53,6 +61,14 @@ export default createStore({
     SET_SOCKET(state, socket) {
       state.socket = socket;
     },
+
+    //设置当前笔记
+    setCurrentNote(state, note) {
+      state.currentNote = { ...note };
+    },
+    setNotesCategories(state, categories) {
+      state.notesCategories = categories;
+    }
   },
   
   // 异步操作和提交 mutations 的方法
@@ -126,11 +142,21 @@ export default createStore({
       // 保存设置逻辑
       commit('SET_SETTINGS', { theme, fontSize }); // 提交 SET_SETTINGS mutation
     },
+
+    // 笔记
+    updateCurrentNote({ commit }, note) {
+      commit('setCurrentNote', note);
+    },
+    updateCategories({ commit }, categories) {
+      commit('setNotesCategories', categories);
+    },
   },
 
   //获取用户信息
   getters:{
     user:(state) => state.user,
+    getCurrentNote: (state) => state.currentNote,
+    getCategories: (state) => state.notesCategories,
   },
 
 });
